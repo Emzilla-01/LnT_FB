@@ -45,10 +45,13 @@ for r in recs:
 del recs
 
 ################################################################################
-
-if __name__ == '__main__':
+def main():
     id_quality_data = get_sql_data()
     heroboxes_data = [image_data_mock(image_id, score) for image_id, score in id_quality_data]
     heroboxes_data = [hb.to_dict() for hb in heroboxes_data]
     main_result=[process_hero_box_annotations(hb) for hb in heroboxes_data]
     print(main_result)
+
+if __name__ == '__main__':
+    main()
+    
