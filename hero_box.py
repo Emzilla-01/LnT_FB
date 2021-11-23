@@ -19,7 +19,6 @@ def min_max_coords(items_list_of_4tupls):
 def process_hero_box_annotations(post_to_boxes):
     data=filter_falsy_lists(post_to_boxes)
     data = list(data.items())
-    print(f"type(data):{type(data)}")
     with Pool() as pool:
         result = pool.map(min_max_coords, data)
     return result
