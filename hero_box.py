@@ -10,11 +10,21 @@ def min_max_coords(items_list_of_4tupls):
     k=items_list_of_4tupls[0]
     if list_of_4tupls == []:
         return
-    least_x = min([t[0] for t in list_of_4tupls])
-    least_y = min([t[1] for t in list_of_4tupls])
-    greatest_x = max([t[2] for t in list_of_4tupls])
-    greatest_y = max([t[3] for t in list_of_4tupls])
-    return( ((k),(least_x, least_y, greatest_x, greatest_y)))
+    min_x, min_y, max_x, max_y = float('inf'), float('inf'), float('-inf'), float('-inf')
+    for t in list_of_4tupls:
+        if t[0]<min_x:
+            min_x=t[0]
+
+        if t[1]<min_y:
+            min_y=t[1]
+
+        if t[2]>max_x:
+            max_x=t[2]
+
+        if t[3]>max_y:
+            max_y=t[3]
+
+    return( ((k),(min_x, min_y, max_x, max_y)))
 
 def process_hero_box_annotations(post_to_boxes):
     data=filter_falsy_lists(post_to_boxes)
