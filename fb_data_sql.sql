@@ -1,4 +1,4 @@
--- try at https://www.db-fiddle.com/f/4Fy9rAgzr3f6ex1n3W2WZ5/7
+--try at https://www.db-fiddle.com/f/bAZJigbbEP8RJYpGE3S62h/1
 --------------------------------------------------------------------------------
 -- Schema SQL
 --------------------------------------------------------------------------------
@@ -57,15 +57,20 @@ from dim_table_attrs
 where table_name= 'unlabeled_image_predictions' 
 group by table_name),
 
+view_sample_0 as  (SELECT 
+        ROW_NUMBER() OVER (order by score desc) as row_number_desc,     
+     	image_id
+    FROM unlabeled_image_predictions
+    ),
+
 view_sample_desc as 
     (SELECT 
-        ROW_NUMBER() OVER (order by score desc) as row_number_desc,     
-        1 + tablecount.table_count - ROW_NUMBER() OVER (order by score desc)  as row_number_asc,
-        MOD( 1 + tablecount.table_count - ROW_NUMBER() OVER (order by score desc), 3)-1 as subsample_asc,
-        MOD(ROW_NUMBER() OVER (order by score desc), 3)-1 as subsample_desc,
+        row_number_desc,     
+        1 + tablecount.table_count - row_number_desc as row_number_asc,
+        MOD( 1 + tablecount.table_count - row_number_desc, 3)-1 as subsample_asc,
+        MOD(row_number_desc, 3)-1 as subsample_desc,
      	image_id
-
-    FROM unlabeled_image_predictions
+    FROM view_sample_0
     left join tablecount on true
     )
 
